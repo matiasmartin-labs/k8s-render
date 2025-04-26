@@ -7,7 +7,14 @@
       "request": "launch",
       "mode": "auto",
       "program": "${workspaceFolder}/cmd/k8s-render",
-      "args": [],
+      "args": [
+        "--input",
+        "./fixtures",
+        "--output",
+        "./fixtures/manifest",
+        "--log-level",
+        "debug",
+      ],
       "env": {},
       "cwd": "${workspaceFolder}",
     }

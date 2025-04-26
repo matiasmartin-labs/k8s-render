@@ -1,0 +1,6 @@
+app:
+  name: test-app
+  port: 8080
+  part-of: auth-system
+  
+namespace: test-namespace
