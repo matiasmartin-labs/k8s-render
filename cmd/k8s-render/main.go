@@ -2,21 +2,24 @@ package main
 
 import (
 	"flag"
-	"time"
 
 	"github.com/matiasmartin-labs/k8s-render/internal/config"
+	"github.com/matiasmartin-labs/k8s-render/internal/renderer"
 	"github.com/matiasmartin-labs/k8s-render/internal/utils"
 )
 
-var inputPath string
-var outputPath string
-var logLevel string
+var (
+	inputPath  string
+	outputPath string
+	logLevel   string
+	vars       = utils.VarsFlag{}
+)
 
 func init() {
 	flag.StringVar(&inputPath, "input", "./k8s", "Path to the input file")
 	flag.StringVar(&outputPath, "output", "./k8s/manifests", "Path to the output file")
 	flag.StringVar(&logLevel, "log-level", "info", "Log level (debug, info, warn, error, fatal, panic)")
-
+	flag.Var(&vars, "var", "Variables to pass to the templates in key=value format")
 	flag.Parse()
 }
 
@@ -36,10 +39,11 @@ func main() {
 		return
 	}
 
-	logger.Infof("Loaded platform configuration: %+v", platformConfig)
-
 	// For now, we'll just simulate the rendering process with a sleep.
-	time.Sleep(2 * time.Second)
+	err = renderer.RenderK8sManifests(outputPath, platformConfig, vars)
+	if err != nil {
+		return
+	}
 
 	logger.Info("Rendering completed successfully.")
 	logger.Infof("Manifests written to %s", outputPath)

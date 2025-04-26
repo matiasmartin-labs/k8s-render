@@ -16,9 +16,14 @@ type Application struct {
 	PartOf string `yaml:"part-of"`
 }
 
+type Network struct {
+	Host string `yaml:"host"`
+}
+
 type PlatformConfig struct {
 	App       Application `yaml:"app"`
 	Namespace string      `yaml:"namespace"`
+	Network   Network     `yaml:"network"`
 }
 
 func LoadPlatformConfig(path string) (*PlatformConfig, error) {

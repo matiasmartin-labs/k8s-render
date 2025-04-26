@@ -1,6 +1,9 @@
 app:
-  name: test-app
+  name: some-app
   port: 8080
-  part-of: auth-system
-  
-namespace: test-namespace
+  part-of: some-one-system
+
+namespace: some-namespace
+
+network:
+  host: some-one.localhost
