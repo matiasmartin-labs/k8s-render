@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/matiasmartin-labs/k8s-render/internal/utils"
 	"gopkg.in/yaml.v3"
 )
@@ -11,19 +12,39 @@ import (
 const platformFileName = "platform.yaml"
 
 type Application struct {
-	Name   string `yaml:"name"`
-	Port   int    `yaml:"port"`
-	PartOf string `yaml:"part-of"`
+	Name     string `yaml:"name" validate:"required"`
+	Port     int    `yaml:"port" validate:"required"`
+	PartOf   string `yaml:"part-of" validate:"required"`
+	Replicas int    `yaml:"replicas" validate:"required"`
 }
 
 type Network struct {
-	Host string `yaml:"host"`
+	Host string `yaml:"host" validate:"required"`
+}
+
+type Environment struct {
+	Secrets []string `yaml:"secrets"`
+}
+
+type Mount struct {
+	Name     string `yaml:"name" validate:"required"`
+	Path     string `yaml:"mount-path" validate:"required"`
+	ReadOnly bool   `yaml:"read-only" validate:"required"`
+}
+
+type SecretVolume struct {
+	Name       string `yaml:"name" validate:"required"`
+	Mode       int    `yaml:"default-mode" validate:"required"`
+	SecretName string `yaml:"secret-name" validate:"required"`
 }
 
 type PlatformConfig struct {
-	App       Application `yaml:"app"`
-	Namespace string      `yaml:"namespace"`
-	Network   Network     `yaml:"network"`
+	App           Application    `yaml:"app" validate:"required"`
+	Namespace     string         `yaml:"namespace" validate:"required"`
+	Network       Network        `yaml:"network" validate:"required"`
+	Env           Environment    `yaml:"env"`
+	Mounts        []Mount        `yaml:"mounts"`
+	SecretVolumes []SecretVolume `yaml:"secret-volumes"`
 }
 
 func LoadPlatformConfig(path string) (*PlatformConfig, error) {
@@ -39,6 +60,12 @@ func LoadPlatformConfig(path string) (*PlatformConfig, error) {
 	var config PlatformConfig
 	if err := yaml.Unmarshal(data, &config); err != nil {
 		logger.Errorf("Error unmarshalling platform configuration: %v", err)
+		return nil, err
+	}
+
+	validate := validator.New()
+	if err := validate.Struct(config); err != nil {
+		logger.Errorf("Validation error in platform configuration: %v", err)
 		return nil, err
 	}
 

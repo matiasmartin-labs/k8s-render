@@ -2,8 +2,25 @@ app:
   name: some-app
   port: 8080
   part-of: some-one-system
+  replicas: 1
 
 namespace: some-namespace
 
 network:
   host: some-one.localhost
+
+mounts:
+  - name: my-keys-volume
+    mount-path: /etc/keys
+    read-only: true
+
+secret-volumes:
+  - name: my-keys-volume
+    default-mode: 420
+    secret-name: my-keys
+
+env:
+  secrets:
+    - my-secret-env
+    - my-secret-env-2
+    - my-secret-env-3

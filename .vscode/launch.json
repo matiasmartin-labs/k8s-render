@@ -22,6 +22,10 @@
         "VCSURL=github.com/this/repo",
         "--var",
         "BuildVersion=2.0.0",
+        "--var",
+        "DockerRegistry=ghcr.io/matiasmartin-labs",
+        "--var",
+        "ImagePullSecret=ghcr-secret"
       ],
       "env": {},
       "cwd": "${workspaceFolder}",
