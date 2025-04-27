@@ -23,7 +23,7 @@ jobs:
       - name: Build
         run: |
           go mod download
-          CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o k8s-render ./cmd/k8s-render
+          CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -o k8s-render ./cmd/k8s-render
       
       - name: List output files
         run: ls -lh ./k8s-render
