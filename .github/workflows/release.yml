@@ -27,10 +27,18 @@ jobs:
       
       - name: List output files
         run: ls -lh ./k8s-render
+      
+      - name: Prepare release package
+        run: |
+          mkdir -p release-package
+          cp ./k8s-render release-package/
+          cp ./templates release-package/
+
+          tar -czf release-package.tar.gz -C release-package .
 
       - name: Upload Release Asset
         uses: softprops/action-gh-release@v2
         with:
-          files: ./k8s-render
+          files: release-package.tar.gz
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
