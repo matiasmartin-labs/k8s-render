@@ -27,9 +27,10 @@ jobs:
       
       - name: List output files
         run: ls -lh ./k8s-render
-      
+
       - name: Upload Release Asset
-        uses: actions/upload-artifact@v4
+        uses: softprops/action-gh-release@v2
         with:
-          name: k8s-render
-          path: ./k8s-render
+          files: ./k8s-render
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
