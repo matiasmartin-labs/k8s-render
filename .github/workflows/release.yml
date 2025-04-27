@@ -32,7 +32,7 @@ jobs:
         run: |
           mkdir -p release-package
           cp ./k8s-render release-package/
-          cp ./templates release-package/
+          cp -r ./templates release-package/
 
           tar -czf release-package.tar.gz -C release-package .
 
