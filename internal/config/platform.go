@@ -69,6 +69,8 @@ func LoadPlatformConfig(path string) (*PlatformConfig, error) {
 		return nil, err
 	}
 
+	logger.Infof("Platform configuration loaded successfully.")
+
 	logger.Debugf("Loaded platform configuration: %+v", config)
 
 	return &config, nil

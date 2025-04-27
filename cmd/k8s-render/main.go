@@ -28,10 +28,10 @@ func main() {
 	logger := utils.NewLogger(logLevel)
 
 	logger.Info("Starting k8s-render...")
-	logger.Infof("Input path: %s", inputPath)
-	logger.Infof("Output path: %s", outputPath)
-	logger.Infof("Log level: %s", logLevel)
-	logger.Infof("Variables: %v", vars)
+	logger.Debugf("Input path: %s", inputPath)
+	logger.Debugf("Output path: %s", outputPath)
+	logger.Debugf("Log level: %s", logLevel)
+	logger.Debugf("Variables: %v", vars)
 
 	logger.Info("Rendering Kubernetes manifests...")
 

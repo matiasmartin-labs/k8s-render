@@ -36,7 +36,7 @@ func RenderK8sManifests(outputDir string, platformConfig *config.PlatformConfig,
 	data["Vars"] = vars
 	data["RenderTime"] = time.Now().Format(time.RFC3339)
 
-	logger.Infof("Rendering data: %v", data)
+	logger.Debugf("Rendering data: %v", data)
 
 	for _, file := range files {
 		logger.Debugf("Processing template file: %s", file)
