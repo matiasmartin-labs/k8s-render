@@ -1,0 +1,35 @@
+name: go-release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.22'
+          cache: true
+          cache-dependency-path: go.sum
+          
+      - name: Build
+        run: |
+          go mod download
+          CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o k8s-render ./cmd/k8s-render
+      
+      - name: List output files
+        run: ls -lh ./k8s-render
+      
+      - name: Upload Release Asset
+        uses: actions/upload-artifact@v3
+        with:
+          name: k8s-render
+          path: ./k8s-render
