@@ -14,11 +14,23 @@ func RenderK8sManifests(outputDir string, platformConfig *config.PlatformConfig,
 	logger := utils.GetLogger()
 
 	pattern := filepath.Join("./templates", "*.template.yml")
+
+	logger.Infof("Searching for template files in: %s", pattern)
+
 	files, err := filepath.Glob(pattern)
 	if err != nil {
 		logger.Errorf("Error finding template files: %v", err)
 		return err
 	}
+
+	logger.Infof("Found %d template files", len(files))
+	
+	if len(files) == 0 {
+		logger.Warn("No template files found. Exiting.")
+		return nil
+	}
+
+	logger.Infof("Rendering templates to: %s", outputDir)
 
 	for _, file := range files {
 		logger.Debugf("Processing template file: %s", file)
