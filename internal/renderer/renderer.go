@@ -24,13 +24,19 @@ func RenderK8sManifests(outputDir string, platformConfig *config.PlatformConfig,
 	}
 
 	logger.Infof("Found %d template files", len(files))
-	
+
 	if len(files) == 0 {
 		logger.Warn("No template files found. Exiting.")
 		return nil
 	}
 
 	logger.Infof("Rendering templates to: %s", outputDir)
+
+	data := utils.StructToMap(platformConfig)
+	data["Vars"] = vars
+	data["RenderTime"] = time.Now().Format(time.RFC3339)
+
+	logger.Infof("Rendering data: %v", data)
 
 	for _, file := range files {
 		logger.Debugf("Processing template file: %s", file)
@@ -64,10 +70,6 @@ func RenderK8sManifests(outputDir string, platformConfig *config.PlatformConfig,
 				logger.Errorf("Error closing output file %s: %v", outputFilePath, err)
 			}
 		}()
-
-		data := utils.StructToMap(platformConfig)
-		data["Vars"] = vars
-		data["RenderTime"] = time.Now().Format(time.RFC3339)
 
 		if err := tmpl.Execute(outputFile, data); err != nil {
 			logger.Errorf("Error executing template %s: %v", file, err)
