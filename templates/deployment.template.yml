@@ -21,7 +21,6 @@ spec:
     matchLabels:
       app.kubernetes.io/name: {{ .App.Name }}
       app.kubernetes.io/part-of: {{ .App.PartOf }}
-      app.kubernetes.io/version: {{ .Vars.BuildVersion }}
   template:
     metadata:
       annotations:
