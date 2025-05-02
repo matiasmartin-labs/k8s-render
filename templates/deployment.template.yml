@@ -50,14 +50,14 @@ spec:
           readinessProbe:
             httpGet:
               path: {{ .App.HealthCheck.Readiness.Path }}
-              port: 8080
+              port: {{ .App.Port }}
             initialDelaySeconds: {{ .App.HealthCheck.Readiness.InitialDelaySeconds }}
             periodSeconds: 10
             failureThreshold: 3
           livenessProbe:
             httpGet:
               path: {{ .App.HealthCheck.Liveness.Path }}
-              port: 8080
+              port: {{ .App.Port }}
             initialDelaySeconds: {{ .App.HealthCheck.Liveness.InitialDelaySeconds }}
             periodSeconds: 5
             failureThreshold: 3

@@ -31,6 +31,10 @@ type Resources struct {
 	Limits   ResourceRequirements `yaml:"limits" validate:"required"`
 }
 
+type Metrics struct {
+	Path string `yaml:"path" validate:"required"`
+}
+
 type Application struct {
 	Name        string      `yaml:"name" validate:"required"`
 	Port        int         `yaml:"port" validate:"required"`
@@ -38,6 +42,7 @@ type Application struct {
 	Replicas    int         `yaml:"replicas" validate:"required"`
 	HealthCheck HealthCheck `yaml:"health-check" validate:"required"`
 	Resources   Resources   `yaml:"resources" validate:"required"`
+	Metrics     Metrics     `yaml:"metrics" validate:"required"`
 }
 
 type Network struct {

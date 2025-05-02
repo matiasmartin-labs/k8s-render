@@ -3,6 +3,8 @@ app:
   port: 8080
   part-of: some-one-system
   replicas: 1
+  metrics:
+    path: /q/metrics
   health-check:
     liveness:
       path: /q/health/live
