@@ -11,11 +11,33 @@ import (
 
 const platformFileName = "platform.yaml"
 
+type HealthCheckProbe struct {
+	Path                string `yaml:"path" validate:"required"`
+	InitialDelaySeconds int    `yaml:"initial-delay-seconds" validate:"required"`
+}
+
+type HealthCheck struct {
+	Liveness  HealthCheckProbe `yaml:"liveness" validate:"required"`
+	Readiness HealthCheckProbe `yaml:"readiness" validate:"required"`
+}
+
+type ResourceRequirements struct {
+	CPU    string `yaml:"cpu" validate:"required"`
+	Memory string `yaml:"memory" validate:"required"`
+}
+
+type Resources struct {
+	Requests ResourceRequirements `yaml:"requests" validate:"required"`
+	Limits   ResourceRequirements `yaml:"limits" validate:"required"`
+}
+
 type Application struct {
-	Name     string `yaml:"name" validate:"required"`
-	Port     int    `yaml:"port" validate:"required"`
-	PartOf   string `yaml:"part-of" validate:"required"`
-	Replicas int    `yaml:"replicas" validate:"required"`
+	Name        string      `yaml:"name" validate:"required"`
+	Port        int         `yaml:"port" validate:"required"`
+	PartOf      string      `yaml:"part-of" validate:"required"`
+	Replicas    int         `yaml:"replicas" validate:"required"`
+	HealthCheck HealthCheck `yaml:"health-check" validate:"required"`
+	Resources   Resources   `yaml:"resources" validate:"required"`
 }
 
 type Network struct {

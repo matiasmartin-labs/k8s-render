@@ -3,6 +3,20 @@ app:
   port: 8080
   part-of: some-one-system
   replicas: 1
+  health-check:
+    liveness:
+      path: /q/health/live
+      initial-delay-seconds: 5
+    readiness:
+      path: /q/health/ready
+      initial-delay-seconds: 10
+  resources:
+    limits:
+      memory: 30Mi
+      cpu: 15m
+    requests:
+      memory: 20Mi
+      cpu: 10m
 
 namespace: some-namespace
 

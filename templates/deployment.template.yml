@@ -37,12 +37,33 @@ spec:
       namespace: {{ .Namespace }}
     spec:
       containers:
-        - envFrom: {{ range $secret := .Env.Secrets }}
-            - secretRef:
-                name: {{ $secret }} {{ end }}
-          image: {{ .Vars.DockerRegistry }}/{{ .App.Name }}:{{ .Vars.BuildVersion }}
+        - image: {{ .Vars.DockerRegistry }}/{{ .App.Name }}:{{ .Vars.BuildVersion }}
           imagePullPolicy: Always
           name: {{ .App.Name }}
+          resources:
+            limits:
+              cpu: {{ .App.Resources.Limits.CPU }}
+              memory: {{ .App.Resources.Limits.Memory }}
+            requests:
+              cpu: {{ .App.Resources.Requests.CPU }}
+              memory: {{ .App.Resources.Requests.Memory }}
+          readinessProbe:
+            httpGet:
+              path: {{ .App.HealthCheck.Readiness.Path }}
+              port: 8080
+            initialDelaySeconds: {{ .App.HealthCheck.Readiness.InitialDelaySeconds }}
+            periodSeconds: 10
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: {{ .App.HealthCheck.Liveness.Path }}
+              port: 8080
+            initialDelaySeconds: {{ .App.HealthCheck.Liveness.InitialDelaySeconds }}
+            periodSeconds: 5
+            failureThreshold: 3
+          envFrom: {{ range $secret := .Env.Secrets }}
+            - secretRef:
+                name: {{ $secret }} {{ end }}
           ports:
             - containerPort: {{ .App.Port }}
               name: http
