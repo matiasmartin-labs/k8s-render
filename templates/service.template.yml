@@ -8,8 +8,8 @@ metadata:
     k8s.renderer/vcs-url: {{ .Vars.VCSURL }}
     k8s.renderer/render-time: {{ .RenderTime }}
     prometheus.io/scrape: "true"
-    prometheus.io/path: {{ .App.Metrics.Path }}
-    prometheus.io/port: "80"
+    prometheus.io/path: "{{ .App.Metrics.Path }}"
+    prometheus.io/port: "{{ .App.Port }}"
   labels:
     app.kubernetes.io/name: {{ .App.Name }}
     app.kubernetes.io/part-of: {{ .App.PartOf }}
